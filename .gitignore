@@ -8,3 +8,5 @@
 *.gcov
 makefile
 makefile~
+.gitignore~
+.gitignore
