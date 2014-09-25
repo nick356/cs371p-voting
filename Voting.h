@@ -47,7 +47,7 @@ bool createElection(int numCam,istream& r);
 *@param r an std::istream
 *returns the preffered canidate number
 */
-int assignBallot(istream& r);
+int assignBallot(string line);
 
 // ------------
 // voting_destroyCanidates
@@ -78,7 +78,7 @@ pair<int, int> isThereLowest();
 *@param canNum is the canidates number.
 *returns true when completed, false if the canidate has no ballots to give.
 */
-bool transferBallots(int canNum);
+bool transferBallots(unsigned int canNum);
 
 // ------------
 // voting_printWinner

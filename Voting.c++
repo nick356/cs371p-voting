@@ -7,6 +7,7 @@
 #include <string>
 #include <queue>
 #include <cassert> // assert
+#include <sstream>
 #include "Voting.h"
 
 
@@ -33,6 +34,7 @@ void readStart(istream& r,ostream& w){
 	//The first number from the file will be the number of elections.
 	//Thus we store it in elections.
 	r>>elections;
+	assert(elections > 0 );;
 	while(currentElection<elections){
 		int numCam;
 		r>>numCam;
@@ -40,10 +42,19 @@ void readStart(istream& r,ostream& w){
 		canidatesInRunning = numCam;
 		//We are making sure that there have been canidates added to the vector
 		assert(createElection(numCam,r));
-		while(r.peek() != '\n')
-			assert(assignBallot(r)>0);
+		string temp;
+		getline(r,temp);
+		while(!temp.empty()){
+			assert(assignBallot(temp)>=0);
+			getline(r,temp);
+		}
 		printWinner(w);
 		++currentElection;
+		canidates.clear();
+		if(currentElection != elections){
+			w<<endl;
+			w<<endl;
+		}
 	}
 
 
@@ -54,31 +65,35 @@ bool createElection(int numCam,istream& r){
 	//Makeing sure there are canidates
 	assert(numCam>0);
 	string x;
+	getline(r,x);
 	canidates = vector<canidate>(numCam);
 	for(int i = 0; i<numCam;++i)
 	{
-		r>>x;
+		getline(r,x);
 		canidates[i].name = x;
 		canidates[i].isOut = false;
+		//cout<<x<<endl;
 	}
 	return canidates.size()>0;
 }
 
 //We will store the ballots in a queue
-int assignBallot(istream& r){
+int assignBallot(string line){
 	queue<int> ballot;
 	int x;
+	stringstream parse(line);
 	//Store each number on the ballot in the queue
-	while(r.peek()!='\n'){
-		r>>x;
+
+	while(parse >> x){
 		ballot.push(x);
 	}
 	//Store the ballot in the canidatesList of ballots.
-	canidates[ballot.front()].canidateVotes.push_back(ballot);
+	//cout<<ballot.front()<<endl;
+	canidates[ballot.front()-1].canidateVotes.push_back(ballot);
 	//Incremint the number of votes the canidate has recieved.
 	++ballots;
-	++canidates[ballot.front()].numVotes;
-	return ballot.front();
+	++canidates[ballot.front()-1].numVotes;
+	return ballot.front()-1;
 }
 
 //We essentialy remove any canidate who shouldn't be in the running
@@ -92,6 +107,7 @@ bool destroyCanidates(int& x){
 			assert(transferBallots(i));
 		}
 	//Return the lowest number of votes;
+
 	return true;
 }
 
@@ -120,18 +136,19 @@ bool transferBallots(unsigned int canNum){
 	{
 		//We check to make sure that the ballot the canidate has is not empty (which it should not be), then we check
 		//to see if the canidate at the front of the ballot is out.
-		while(!canidates[canNum].canidateVotes[i].empty() && canidates[canidates[canNum].canidateVotes[i].front()].isOut)
+		while(canidates[canidates[canNum].canidateVotes[i].front()-1].isOut){
 			//If the canidate is out then we pop that canidate from the ballot.
 			canidates[canNum].canidateVotes[i].pop();
+		}
 		//We make sure that the ballot is not empty
 		assert(!canidates[canNum].canidateVotes[i].empty());
+		int index = canidates[canNum].canidateVotes[i].front()-1;
 		//Then we transfer the ballot to it's next prefered canidate.
-		canidates[canidates[canNum].canidateVotes[i].front()].canidateVotes.pushback(canidates[canNum].canidateVotes[i]);
+		canidates[canidates[canNum].canidateVotes[i].front()-1].canidateVotes.push_back(canidates[canNum].canidateVotes[i]);
 		//Increment the number of votes the new canidate has.
-		++canidates[canidates[canNum].canidateVotes[i].front()].numVotes;
+		++canidates[canidates[canNum].canidateVotes[i].front()-1].numVotes;
 	}
-	//Destroy the old canidates ballots, we don't need copies.
-	canidates[canNum].canidateVotes.clear();	
+	//Destroy the old canidates ballots, we don't need copies.	
 	return true;
 }
 
@@ -140,16 +157,20 @@ void printWinner(ostream& w){
 	pair<int, int> temp = isThereLowest();
 	assert(temp.first != -1 && temp.second != -1);
 	while(!winnerfound){
+		temp=isThereLowest();
 		if(temp.first == temp.second){
-			for(int i = 0; i<canidates.size();i++)
-				if(!canidates[i].isOut)
-					w<<canidates[i].name<<" ";
+			for(unsigned int i = 0; i<canidates.size();i++)
+				if(!canidates[i].isOut){
+					w<<canidates[i].name<<" ";	
+				}
 			winnerfound = true;
 		}else if(temp.second > ballots/2){
-			w<<canidates[i].name;
+			for(unsigned int i = 0; i<canidates.size();i++)
+				if(temp.second == canidates[i].numVotes)
+					w<<canidates[i].name;
 			winnerfound = true;
-		}else
-			destroyCanidates();
+		}else{
+			destroyCanidates(temp.first);
+		}
 	}
-	w<<endl;
 }
