@@ -34,19 +34,11 @@ void solveVote(std::istream& r,std::ostream& w);
 *Places all of the canidates in a vector
 *@param numCam is the number of canadites
 *@param r an std::istream
-*returns whether the Election Vector has increased in size
 */
 bool createElection(int numCam,istream& r);
 
-// ------------
-// voting_assignBallot
-// ------------
-/**
-*Places the ballots in the ballot vector
-*@param r an std::istream
-*returns the preffered canidate number
-*/
-int assignBallot(istream& r);
+
+
 
 
 

@@ -10,7 +10,6 @@
 
 using namespace std;
 vector<string> canidates;
-vector<int> numVotes;
 vector<vector<int>> canidateVotes;
 
 void readStart(istream& r,ostream& w){
@@ -34,7 +33,6 @@ bool createElection(int numCam,istream& r){
 	assert(numCam>0);
 	string x;
 	canidates = vector<string>(numCam);
-	numVotes = vector<int>(numCam,0);
 	for(int i = 0; i<numCam;++i)
 	{
 		r>>x;
@@ -53,27 +51,4 @@ int assignBallot(istream& r){
 	char temp = r.get();
 	canidateVotes.push_back(ballot);
 	return ballot[0];
-}
-
-int dumbSolution(){
-	bool winnerfound = false;
-	int highestVote = 0;
-	while(!winnerfound){
-		for(int i = 0; i<numVotes.size();++i){
-			if(highestVote<numVotes[i])
-				highestVote = numVotes[i];
-		}
-		if(highestVote>=canidateVotes.size()/2){
-			winnerfound = true;
-			break;
-		}
-
-		
-
-	}
-
-	if(winnerfound)
-		return highestVote;
-	else
-		return 0;
 }
