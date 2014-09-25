@@ -5,6 +5,7 @@
 #include <utility> // pair
 #include <vector>
 #include <string>
+#include <queue>
 #include "Voting.h"
 
 
@@ -12,13 +13,14 @@ using namespace std;
 
 struct canidate{
 
-	string canidates;
+	string name;
 	bool isOut;
 	int numVotes;
-
+	vector<queue<int>> canidateVotes;
 }
 vector<canidate> canidates;
-vector<vector<int>> canidateVotes;
+int canidatesInRunning;
+int ballots;
 
 
 //This just starts reading the file.
@@ -33,6 +35,8 @@ void readStart(istream& r,ostream& w){
 	while(currentElection<elections){
 		int numCan;
 		r>>numCam;
+		ballots = 0;
+		canidatesInRunning = numCam;
 		//We are making sure that there have been canidates added to the vector
 		assert(createElection(numCam,r));
 		while(r.peek() != '\n')
@@ -52,60 +56,97 @@ bool createElection(int numCam,istream& r){
 	for(int i = 0; i<numCam;++i)
 	{
 		r>>x;
-		canidates[i].canidates = x;
+		canidates[i].name = x;
+		canidates[i].isOut = false;
 	}
 	return canidates.size()>0;
 }
 
+//We will store the ballots in a queue
 int assignBallot(istream& r){
-	vector<int> ballot;
+	queue<int> ballot;
 	int x;
+	//Store each number on the ballot in the queue
 	while(r.peek()!='\n'){
 		r>>x;
-		ballot.push_back(x);
+		ballot.push(x);
 	}
 	char temp = r.get();
-	canidateVotes.push_back(ballot);
-	return ballot[0];
+	//Store the ballot in the canidatesList of ballots.
+	canidates[ballot.front()].canidateVotes.push_back(ballot);
+	//Incremint the number of votes the canidate has recieved.
+	++ballots;
+	++canidates[ballot.front()].numVotes;
+	return ballot.front();
 }
 
-int destroyCanidates(){
+//We essentialy remove any canidate who shouldn't be in the running
+bool destroyCanidates(int& x){
+	//We go through all canidates who have the lowest and remove them from the running
+	//We then transfer their ballots.
+	for(int i = 0; i<canidates.size();++i)
+		if(canidates[i].numVotes == x){
+			canidates[i].isOut = true;
+			--canidatesInRunning;
+			assert(transferBallots(i));
+		}
+	//Return the lowest number of votes;
+	return true;
+}
+
+pair<int, int> isThereLowest(){
 	int lowest = -1;
-	for(int i = 0; i<numVotes.size();++i){
-		if(numVotes[i] != -1 && lowest != -1)
-			lowest = numVotes[i];
-		if(numVotes[i]<lowest && numVotes[i] != -1)
-			lowest = numVotes[i];
+	int highest = -1;
+	for(int i = 0; i<canidates.size();++i){
+		//If the canidate is not already out and if the lowest is -1 or if the canidates number
+		//of votes is less than the lowest.
+		if(!canidates[i].isOut && (lowest == -1 || canidates[i].numVotes < lowest))
+			lowest = canidates[i].numVotes;
+		if(!canidates[i].isOut && (highest == -1 || canidates[i].numVotes > highest))
+			highest = canidates[i].numVotes;
 	}
 
-	for(int i = 0; i<numVotes.size();++i)
-		if(numVotes[i] == lowest)
-			numVotes[i] = -1;
 
-	return lowest;
+
+	return make_pair(lowest,highest);
 }
 
-
-
-int dumbSolution(){
-	bool winnerfound = false;
-	for(int i = 0; i< canidateVotes.size(); ++i)
-		++numVotes[canidateVotes[i][0]];
-	while(!winnerfound){
-		for(int i = 0; i< numVotes.size(); ++i)
-			if(numVotes[i]>=canidateVotes.size()/2)
-				return numVotes[i];
-		assert(destroyCanidates()>-1);
-
-		for(int i = 0; i<canidateVotes.size();++i)
-			while(numVotes[canidateVotes[i][0]] == -1){
-				int j = 1;
-				canidateVotes[i][0] = canidateVotes[i][j];
-				++j;
-			}
-		for(int i = 0; i<canidateVotes.size();++i)
-			if(numVotes[canidateVotes[i][0]] == -1)
-				
+bool transferBallots(int canNum){
+	//We go through each ballot the canidate has
+	for(int i = 0; i<canidates[canNum].canidateVotes.size(0);++i)
+	{
+		//We check to make sure that the ballot the canidate has is not empty (which it should not be), then we check
+		//to see if the canidate at the front of the ballot is out.
+		while(!canidates[canNum].canidateVotes[i].empty() && canidates[canidates[canNum].canidateVotes[i].front()].isOut)
+			//If the canidate is out then we pop that canidate from the ballot.
+			canidates[canNum].canidateVotes[i].pop();
+		//We make sure that the ballot is not empty
+		assert(!canidates[canNum].canidateVotes[i].empty());
+		//Then we transfer the ballot to it's next prefered canidate.
+		canidates[canidates[canNum].canidateVotes[i].front()].canidateVotes.pushback(canidates[canNum].canidateVotes[i]);
+		//Increment the number of votes the new canidate has.
+		++canidates[canidates[canNum].canidateVotes[i].front()].numVotes;
 	}
-		return 0;
+	//Destroy the old canidates ballots, we don't need copies.
+	~canidates[canNum].canidateVotes;	
+	return true;
+}
+
+void printWinner(ostream& w){
+	bool winnerfound = false;
+	pair<int, int> temp = isThereLowest();
+	assert(temp.first != -1 && temp.second != -1);
+	while(!winnerfound){
+		if(temp.first == temp.second){
+			for(int i = 0; i<canidates.size();i++)
+				if(!canidates[i].isOut)
+					w<<canidates[i].name<<" ";
+			winnerfound = true;
+		}else if(temp.second > ballots/2){
+			w<<canidates[i].name;
+			winnerfound = true;
+		}else
+			destroyCanidates();
+	}
+	w<<endl;
 }

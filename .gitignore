@@ -12,3 +12,5 @@ makefile~
 .gitignore
 *.c++~
 *.h~
+*.in~
+*.out~
