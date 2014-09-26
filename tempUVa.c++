@@ -8,7 +8,6 @@
 #include <queue>
 #include <cassert> // assert
 #include <sstream>
-#include "Voting.h"
 
 
 using namespace std;
@@ -20,7 +19,8 @@ struct canidate{
 	int numVotes;
 	vector<queue<int>> canidateVotes;
 };
-vector<canidate> canidates;
+vector<canidate> canidates(20);
+
 vector<canidate*> winners;
 int canidatesInRunning;
 int ballots;
@@ -54,7 +54,6 @@ bool createElection(int numCam,istream& r){
 	assert(numCam>0);
 	string x;
 	getline(r,x);
-	canidates = vector<canidate>(numCam);
 	winners = vector<canidate*>(numCam);
 	for(int i = 0; i<numCam;++i)
 	{
@@ -65,7 +64,7 @@ bool createElection(int numCam,istream& r){
 		winners[i]=&canidates[i];
 		//cout<<x<<endl;
 	}
-	return canidates.size()>0;
+	return numCam>0;
 }
 
 //We will store the ballots in a queue
@@ -116,15 +115,16 @@ bool destroyCanidates(int& x){
 }
 
 pair<int, int> isThereLowest(){
-	int lowest = -1;
+	int lowest = 20000;
 	int highest = -1;
 	for(unsigned int i = 0; i<winners.size();++i){
 		//If the canidate is not already out and if the lowest is -1 or if the canidates number
 		//of votes is less than the lowest.
-		if(lowest == -1 || (*winners[i]).numVotes < lowest)
+		if((*winners[i]).numVotes < lowest)
 			lowest = (*winners[i]).numVotes;
-		if(highest == -1 || (*winners[i]).numVotes > highest)
+		if((*winners[i]).numVotes > highest)
 			highest = (*winners[i]).numVotes;
+		//cout<<"Bad Code!!!"<<endl;
 	}
 	/*for(unsigned int i = 0; i<winners.size();++i)
 		if((*winners[i]).numVotes == lowest)
@@ -138,14 +138,10 @@ void printWinner(ostream& w){
 	assert(temp.first != -1 && temp.second != -1);
 	while(!winnerfound){
 		temp=isThereLowest();
-		if(temp.first == temp.second){
-			for(unsigned int i = 0; i<winners.size();i++)
-				w<<(*winners[i]).name<<endl;	
-			winnerfound = true;
-		}else if(temp.second > ballots/2){
-			for(unsigned int i = 0; i<winners.size();i++)
+		if(temp.first == temp.second || temp.second > ballots/2){
+			for(unsigned int i = 0; i<winners.size();++i)
 				if(temp.second == (*winners[i]).numVotes)
-					w<<(*winners[i]).name<<endl;
+					w<<(*winners[i]).name<<endl;	
 			winnerfound = true;
 		}else
 			destroyCanidates(temp.first);
@@ -180,7 +176,6 @@ void readStart(istream& r,ostream& w){
 				}
 			}
 			printWinner(w);
-			canidates.clear();
 			winners.clear();	
 		}
 		++currentElection;
@@ -188,4 +183,9 @@ void readStart(istream& r,ostream& w){
 			w<<endl;
 		}
 	}
+}
+int main () {
+	using namespace std;
+	readStart(cin, cout);
+	return 0;
 }
