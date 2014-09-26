@@ -1,3 +1,67 @@
+commit 1017a33f6d1c6315fe72b5167750a4dcf1ce4c3b
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Fri Sep 26 11:08:38 2014 -0500
+
+    Updating doxygen
+
+commit 87b76ffb3cba20e4c0b68050a7b9b12c9268bef6
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Fri Sep 26 11:03:13 2014 -0500
+
+    Removed a temporary file
+
+commit 2d60ee892543deaf9ad94c738396aec848b509bf
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Fri Sep 26 11:02:19 2014 -0500
+
+    Pushing RunVoting.out because Downing's makefile gave me the wrong file
+
+commit e5a99b8a9fe3937f7aa85f11d751d2b96c0333ae
+Author: nick356 <nac568@utexas.edu>
+Date:   Thu Sep 25 22:04:28 2014 -0500
+
+    Delete RunVoting2.out
+    
+    ...
+
+commit b4143dcddef4e0d02a829e675df31bf358bed4c5
+Author: nick356 <nac568@utexas.edu>
+Date:   Thu Sep 25 22:04:19 2014 -0500
+
+    Delete RunVoting2.in
+    
+    ...
+
+commit d5595513cdecd9dd8a2896d8ec7912fd0a1bb5a6
+Author: nick356 <nac568@utexas.edu>
+Date:   Thu Sep 25 22:04:02 2014 -0500
+
+    Delete RunVoting.tmp
+    
+    Bad commit.
+
+commit b58bbee270832cf8905611958d7b60989ad4965f
+Author: nick356 <nac568@utexas.edu>
+Date:   Thu Sep 25 22:03:29 2014 -0500
+
+    Delete Doxyfile~
+    
+    Not suppose to be there
+
+commit edde3fab46eb3df4f1753de56ab4f3e58d3c8a2e
+Author: nick356 <nac568@utexas.edu>
+Date:   Thu Sep 25 22:03:14 2014 -0500
+
+    Delete tempUVa.c++
+    
+    File that was not suppose to be there.
+
+commit 7423815f201c8db8fc96d618f4d9c52cb7607752
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Thu Sep 25 22:01:22 2014 -0500
+
+    Log file
+
 commit ef8f68536c8adbaa2b00f5b2b6c3ad5e87ea3a94
 Author: Nicholas Carter <nick356@cs.utexas.edu>
 Date:   Thu Sep 25 22:00:03 2014 -0500
