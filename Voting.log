@@ -1,0 +1,71 @@
+commit ef8f68536c8adbaa2b00f5b2b6c3ad5e87ea3a94
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Thu Sep 25 22:00:03 2014 -0500
+
+    Everything finished
+
+commit 6a27305493a0d6987c3500f02fc6ef9744061163
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Thu Sep 25 16:45:58 2014 -0500
+
+    I'm passing my acceptance tests
+
+commit 5a092228516421ac5843ea5f974f57f8df877d85
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Thu Sep 25 13:50:44 2014 -0500
+
+    Entering debug mode
+
+commit 0c28316914bcf7de41808ea4b834725f0c884512
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Thu Sep 25 13:26:05 2014 -0500
+
+    Refined many methods int Voting.c++
+
+commit 19f9e7378f307dc2e21bc548be26c8ebf9c0e1c2
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Thu Sep 25 11:26:26 2014 -0500
+
+    clearing git trash
+
+commit 9996ca00e00a1eae8f0fe73164bbb3ca128d80e4
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Thu Sep 25 11:25:18 2014 -0500
+
+    Added acceptance tests, and started to implement a struct
+
+commit b95149948c7cda2bf8d1afe4650b8b6dad3db600
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Wed Sep 24 23:16:05 2014 -0500
+
+    Cleaned out directory
+
+commit befa5a005d9f0faa290d1699e41f18f2d58188bd
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Wed Sep 24 23:15:21 2014 -0500
+
+    Added several methods to Voting.c++, started implementing dumb solution
+
+commit f2f8eb53e27e3ab6bef6ad1f14f154f1abe52138
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Wed Sep 24 18:25:12 2014 -0500
+
+    Perfecting the git ignore file
+
+commit fc9525323ba343156a830f8e1c3c66bbb2a530c7
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Wed Sep 24 18:24:32 2014 -0500
+
+    removed a redudant file, and added the makefile
+
+commit 6d50a56b2dd469955de7719f68005bdb19494204
+Author: Nicholas Carter <nick356@cs.utexas.edu>
+Date:   Wed Sep 24 18:23:34 2014 -0500
+
+    Adding base files, all but the makefile are empty
+
+commit 41a58c308e3badd572cb0e9eb045235fec4d95e6
+Author: nick356 <nac568@utexas.edu>
+Date:   Wed Sep 24 18:04:10 2014 -0500
+
+    Initial commit
